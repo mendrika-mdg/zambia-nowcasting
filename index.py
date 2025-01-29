@@ -1,12 +1,6 @@
 import streamlit as st                                                      #type: ignore
 st.set_page_config(layout="wide")
-from datetime import time, datetime
-from matplotlib.backends.backend_agg import RendererAgg                     #type: ignore
-_lock = RendererAgg.lock
 from datetime import datetime, time, timedelta
-import os
-from PIL import Image                                                       #type: ignore
-import io
 
 header_footer_css = """
     <style>
