@@ -1,6 +1,11 @@
 import streamlit as st                                                      #type: ignore
-st.set_page_config(layout="wide")
 from datetime import datetime, time, timedelta
+
+st.set_page_config(
+    page_title="Object-based Nowcasting",
+    page_icon="🌧️",               
+    layout="wide"                 
+)
 
 header_footer_css = """
     <style>
@@ -38,8 +43,6 @@ header_footer_css = """
 ########################################################################### HEADER ##########################################################################################################
 
 st.markdown(header_footer_css, unsafe_allow_html=True)
-#st.markdown('<div class="header">Welcome to My Streamlit App</div>', unsafe_allow_html=True)
-
 
 ########################################################################### CONTENT ##########################################################################################################
 
@@ -48,33 +51,27 @@ page = st.sidebar.radio("Go to", ["Home", "Climatology", "Model" ,"Nowcast Porta
 
 # Content for Page 1
 if page == "Home":
+
     st.title("Convective Storm Nowcasting Using Machine Learning")
+    st.write("**Authors**: Mendrika Rakotomanga, Douglas Parker, Nadhir B. Rached, Steven Tobias, Seonaid Anderson, Cornelia Klein")
 
     st.header("Project Abstract")
     abstract = """
-    Convective storm nowcasting plays a crucial role in early warning and mitigating the impact of severe weather. 
+    Convective core nowcasting plays a crucial role in early warning and mitigating the impact of severe weather. 
     
     This study introduces a fast, simple, yet effective object based approach using machine learning. 
     Storm objects are identified via a 2D wavelet transform on cloud-top temperature satellite data. Features such as time of observation (t0), latitude, longitude, size, distance, and wavelet power of nearest storm to 
-    Zambia are used to predict storm occurrence 1 to 6 hours ahead. 
-    
-    Initial results for Dakar outperformed an operational conditional climatology model for 1-, 3-, and 6-
-    hour lead times. Explainable AI techniques, such as Shapley values, were used to ensure
-    the model’s predictions are meteorologically consistent. The model was expanded to
-    cover a larger region while maintaining the input structure. 
-    
-    Additionally, modifications
-    were made to include LSTMs for sequential storm information and convolutional layers
-    for gridded nowcasting. Performance, evaluated using the Fractions Skill Score (FSS),
-    showed skill for 1- and 3-hour lead times.
+    Zambia are used to predict storm occurrence 1 hour ahead. 
     """
     st.success(abstract)
 
+    st.image("./public/images/model/architecture/example-of-prediction.png",  caption="Example of forecast using our model")
+
     st.info(
         """
-        **Goal**: To leverage information about the nearest storm 
-        (time of observation, latitude, longitude, size, distance) 
-        to predict storm occurrences at different lead times using a hybrid LSTM-CONV based deep learning architecture.
+        **Goal**: To use information about the nearest storm 
+        (time of observation, latitude, longitude, intensity, size, distance) 
+        to predict storm occurrences at different lead times using a hybrid LSTM-CONV based machine learning architecture.
         """)
 
     st.markdown('<div class="footer">&copy; 2025 Mendrika Rakotomanga. All Rights Reserved.</div>', unsafe_allow_html=True)
@@ -97,13 +94,9 @@ elif page == "Model":
     st.title("An Object-Based Approach to Convective Storm Nowcasting Using Machine Learning")
     st.header("Model Architecture")
 
-    st.image("/localhome/home/mmmhr/deploy-web/images/lstm.png", caption="Convective Storm Nowcasting Project", use_container_width=False)
-
-    st.markdown('<div class="footer">&copy; 2025 Mendrika Rakotomanga. All Rights Reserved.</div>', unsafe_allow_html=True)
-
 elif page == "Nowcast Portal":
     st.title("Convective Storm Nowcasting Using Machine Learning")
-    st.write("**Author**: Mendrika Rakotomanga, Douglas Parker, Nadhir B. Rached, Seonaid Anderson, Cornelia Klein")
+    st.write("**Author**: Mendrika Rakotomanga, Douglas Parker, Nadhir B. Rached, Steven Tobias, Seonaid Anderson, Cornelia Klein")
     st.empty()
 
     observation, spacer, nowcast = st.columns([1, 0.5, 1])  # Adjust the width ratios as needed
@@ -131,8 +124,8 @@ elif page == "Nowcast Portal":
         st.write(f"Lead time: {lead_time} h")
 
     st.empty()  
-    st.markdown('<div class="footer">&copy; 2025 Mendrika Rakotomanga. All Rights Reserved.</div>', unsafe_allow_html=True)
     st.warning("This is just an example from 2020-07-11 at 18:30 UTC.")
+    st.markdown('<div class="footer">&copy; 2025 Mendrika Rakotomanga. All Rights Reserved.</div>', unsafe_allow_html=True)
 
 elif page == "Contact us":
 
