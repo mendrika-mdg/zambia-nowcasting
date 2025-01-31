@@ -39,20 +39,16 @@ header_footer_css = """
     }
     </style>
 """
-
-########################################################################### HEADER ##########################################################################################################
-
 st.markdown(header_footer_css, unsafe_allow_html=True)
 
-########################################################################### CONTENT ##########################################################################################################
 
 st.sidebar.title("Menu")
-page = st.sidebar.radio("Go to", ["Home", "Climatology", "Model" ,"Nowcast Portal", "Contact us"])
+page = st.sidebar.radio("Go to", ["Home", "Climatology" ,"Nowcast Portal", "Contact us"])
 
 # Content for Page 1
 if page == "Home":
 
-    st.title("Convective Storm Nowcasting Using Machine Learning")
+    st.title("Convective Core Nowcasting Using Machine Learning")
     st.write("**Authors**: Mendrika Rakotomanga, Douglas Parker, Nadhir B. Rached, Steven Tobias, Seonaid Anderson, Cornelia Klein")
 
     st.header("Project Abstract")
@@ -60,19 +56,14 @@ if page == "Home":
     Convective core nowcasting plays a crucial role in early warning and mitigating the impact of severe weather. 
     
     This study introduces a fast, simple, yet effective object based approach using machine learning. 
-    Storm objects are identified via a 2D wavelet transform on cloud-top temperature satellite data. Features such as time of observation (t0), latitude, longitude, size, distance, and wavelet power of nearest storm to 
+    Storm objects are identified via a 2D wavelet transform on cloud-top temperature satellite data. 
+    
+    Features such as time of observation ($t_0$), latitude, longitude, size, distance, and wavelet power of nearest storm to 
     Zambia are used to predict storm occurrence 1 hour ahead. 
     """
     st.success(abstract)
 
     st.image("./public/images/model/architecture/example-of-prediction.png",  caption="Example of forecast using our model")
-
-    st.info(
-        """
-        **Goal**: To use information about the nearest storm 
-        (time of observation, latitude, longitude, intensity, size, distance) 
-        to predict storm occurrences at different lead times using a hybrid LSTM-CONV based machine learning architecture.
-        """)
 
     st.markdown('<div class="footer">&copy; 2025 Mendrika Rakotomanga. All Rights Reserved.</div>', unsafe_allow_html=True)
 
@@ -80,51 +71,65 @@ if page == "Home":
 elif page == "Climatology":
 
     st.title("Diurnal climatology of convective cores in Zambia")
-    st.write("Based on methods described by Anderson et al. (2024)")
+    st.write("""The full climatological probabilities of convective activity give a static overview of diurnal 
+    and spatial variations in convective probabilityClimatology calculated as 
+    described by Anderson et al. (2024)""")
 
     spatial_scale = st.radio( "Select a spatial scale (in km)", options=[45, 95], horizontal=True)
     time_pc = st.time_input("Choose a time of day", value=datetime.strptime('12:00', '%H:%M')).strftime('%H-%M')
     file_pc = f"./public/images/pc/{spatial_scale}/pc-Zambia-{time_pc}-{spatial_scale}.png"
     st.image(file_pc)
+
     st.markdown('<div class="footer">&copy; 2025 Mendrika Rakotomanga. All Rights Reserved.</div>', unsafe_allow_html=True)
 
-
-elif page == "Model":
-
-    st.title("An Object-Based Approach to Convective Storm Nowcasting Using Machine Learning")
-    st.header("Model Architecture")
-
 elif page == "Nowcast Portal":
-    st.title("Convective Storm Nowcasting Using Machine Learning")
-    st.write("**Author**: Mendrika Rakotomanga, Douglas Parker, Nadhir B. Rached, Steven Tobias, Seonaid Anderson, Cornelia Klein")
+    st.title("Convective Core Nowcasting Using Machine Learning")
     st.empty()
 
     observation, spacer, nowcast = st.columns([1, 0.5, 1])  # Adjust the width ratios as needed
 
     with observation:
+        st.subheader("Observation")
 
-        selected_date = st.date_input("Choose a date", datetime.today())
-        current_time = datetime.now().time()
-        selected_time = st.time_input("Choose a time", current_time)
-        # Display selected time
-        st.write(f"Selected time: {selected_time.strftime('%H:%M')}")
+        st.write("Choose nowcast origin($t_0$)")
+        selected_date = st.date_input("Choose a date")
+        selected_time = st.time_input("Choose a time", value=datetime.strptime('12:00', '%H:%M'))
+        selected_datetime = datetime.combine(selected_date, selected_time)
 
-        formatted_date = selected_date.strftime('%Y%m%d')
-        formatted_time = selected_time.strftime('%H%M')        
+        formatted_date = selected_date.strftime('%Y-%m-%d')
+        formatted_time = selected_time.strftime('%H-%M')     
+
+
+        # Create the slider
+        selected_value = st.slider("Observation before $t_0$ (in minutes):", min_value=-120, max_value=0, step=15, value=0)
+
+        # Display the selected value
+        st.write(f"Observation displayed: {selected_datetime + timedelta(minutes=int(selected_value))}")     
+
+        display_datetime = selected_datetime + timedelta(minutes=int(selected_value))
+
+        file_observation = f"./public/images/observation/observation-{display_datetime.strftime('%Y-%m-%d-%H-%M')}.png"   
+        try:
+            st.image(file_observation)
+        except Exception as e:
+            st.error("Data unavailable")
 
     with spacer:
         st.write("") 
 
-
-    # Add a title and slider in the second column
     with nowcast:
         st.subheader("Nowcast")
 
-        lead_time = st.select_slider( "Select a lead time", options=[1, 3],  value=1)
-        st.write(f"Lead time: {lead_time} h")
+        st.write(f"Based on latest observation up to {display_datetime}")
 
+        new_datetime = selected_datetime + timedelta(hours=1)
+        file_nowcast = f"./public/images/nowcast/nowcast-{new_datetime.strftime('%Y-%m-%d-%H-%M')}.png"   
+        try:
+            st.write(file_nowcast)
+            st.image(file_nowcast)
+        except Exception as e:
+            st.error("Nowcast Unavailable")
     st.empty()  
-    st.warning("This is just an example from 2020-07-11 at 18:30 UTC.")
     st.markdown('<div class="footer">&copy; 2025 Mendrika Rakotomanga. All Rights Reserved.</div>', unsafe_allow_html=True)
 
 elif page == "Contact us":
@@ -135,7 +140,7 @@ elif page == "Contact us":
     # Create a form for the "Contact Us" page
     with st.form(key="contact_form"):
         # Input fields for name, email, and message
-        name = st.text_input("Name", placeholder="Your full name")
+        name = st.text_input("Name", placeholder="Your name")
         email = st.text_input("Email", placeholder="yourname@example.com")
         message = st.text_area("Message", placeholder="Type your message here")
 
