@@ -125,7 +125,7 @@ elif page == "Nowcast Portal":
         new_datetime = selected_datetime + timedelta(hours=1)
         file_nowcast = f"./public/images/nowcast/nowcast-{new_datetime.strftime('%Y-%m-%d-%H-%M')}.png"   
         try:
-            st.write(file_nowcast)
+            #st.write(file_nowcast)
             st.image(file_nowcast)
         except Exception as e:
             st.error("Nowcast Unavailable")
