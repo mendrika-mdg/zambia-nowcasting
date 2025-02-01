@@ -10,6 +10,7 @@ LATEST_FILE=$(find "$TARGET_DIR" -type f -exec stat --format="%Y %n" {} \; | sor
 
 # Run the Python script on the latest file
 if [[ -n "$LATEST_FILE" ]]; then
+    cd /home/users/mendrika/zambia-nowcasting
     git pull
     python3 /home/users/mendrika/SSA/Zambia/codes/web/code/plot_observation.py "$LATEST_FILE"
     git add .
