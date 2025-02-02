@@ -65,6 +65,8 @@ if page == "Home":
 
     st.image("./public/images/model/architecture/example-of-prediction.png",  caption="Example of forecast using our model")
 
+    st.success("Data from EUMETSAT and developed at UKCEH")
+
     st.markdown('<div class="footer">&copy; 2025 Mendrika Rakotomanga. All Rights Reserved.</div>', unsafe_allow_html=True)
 
 
