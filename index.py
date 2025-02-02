@@ -73,9 +73,11 @@ if page == "Home":
 elif page == "Climatology":
 
     st.title("Diurnal climatology of convective cores in Zambia")
+
     st.write("""The full climatological probabilities of convective activity give a static overview of diurnal 
-    and spatial variations in convective probabilityClimatology calculated as 
-    described by Anderson et al. (2024)""")
+    and spatial variations in convective probability
+    
+    Climatology probabilities calculated as described by Anderson et al. (2024)""")
 
     spatial_scale = st.radio( "Select a spatial scale (in km)", options=[45, 95], horizontal=True)
     time_pc = st.time_input("Choose a time of day", value=datetime.strptime('12:00', '%H:%M')).strftime('%H-%M')
