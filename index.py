@@ -116,7 +116,7 @@ elif page == "Nowcast Portal":
         try:
             st.image(file_observation)
         except Exception as e:
-            st.error("Data unavailable")
+            st.error("No data available")
 
     with spacer:
         st.write("") 
