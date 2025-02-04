@@ -95,28 +95,37 @@ elif page == "Nowcast Portal":
     with observation:
         st.subheader("Observation")
 
-        st.write("Choose nowcast origin($t_0$)")
-        selected_date = st.date_input("Choose a date")
-        selected_time = st.time_input("Choose a time", value=datetime.strptime('12:00', '%H:%M'))
+        st.write("Choose nowcast origin ($t_0$)")
+
+        # Get the current UTC time and round it to the nearest past 15-minute step
+        now_utc = datetime.utcnow()
+        rounded_minutes = (now_utc.minute // 15) * 15  # Round down to nearest 15 minutes
+        default_time = now_utc.replace(minute=rounded_minutes, second=0, microsecond=0).time()
+
+        # User inputs
+        selected_date = st.date_input("Choose a date", value=now_utc.date())
+        selected_time = st.time_input("Choose a time", value=default_time)
         selected_datetime = datetime.combine(selected_date, selected_time)
 
         formatted_date = selected_date.strftime('%Y-%m-%d')
-        formatted_time = selected_time.strftime('%H-%M')     
-
+        formatted_time = selected_time.strftime('%H-%M')
 
         # Create the slider
         selected_value = st.slider("Observation before $t_0$ (in minutes):", min_value=-120, max_value=0, step=15, value=0)
 
-        # Display the selected value
-        st.write(f"Observation displayed: {selected_datetime + timedelta(minutes=int(selected_value))}")     
-
+        # Compute and display adjusted observation time
         display_datetime = selected_datetime + timedelta(minutes=int(selected_value))
+        st.write(f"Observation displayed: {display_datetime}")
 
-        file_observation = f"./public/images/observation/observation-{display_datetime.strftime('%Y-%m-%d-%H-%M')}.png"   
+        # Construct file path
+        file_observation = f"./public/images/observation/observation-{display_datetime.strftime('%Y-%m-%d-%H-%M')}.png"
+
+        # Display image if available
         try:
             st.image(file_observation)
-        except Exception as e:
+        except Exception:
             st.error("No data available")
+
 
     with spacer:
         st.write("") 
@@ -124,7 +133,7 @@ elif page == "Nowcast Portal":
     with nowcast:
         st.subheader("Nowcast")
 
-        st.write(f"Based on latest observation up to {display_datetime}")
+        st.write(f"Based on latest observation up to {selected_datetime}")
 
         new_datetime = selected_datetime + timedelta(hours=1)
         file_nowcast = f"./public/images/nowcast/nowcast-{new_datetime.strftime('%Y-%m-%d-%H-%M')}.png"   
