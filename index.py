@@ -48,17 +48,17 @@ page = st.sidebar.radio("Go to", ["Home", "Climatology" ,"Nowcast Portal", "Cont
 # Content for Page 1
 if page == "Home":
 
-    st.title("Convective Core Nowcasting Using Machine Learning")
+    st.title("Convective Core Nowcasting Using Machine Learning with an Object-Based Approach")
     st.write("**Authors**: Mendrika Rakotomanga, Douglas Parker, Nadhir B. Rached, Steven Tobias, Seonaid Anderson, Cornelia Klein")
 
-    st.header("Project Abstract")
+    st.header("Description")
     abstract = """
     Convective core nowcasting plays a crucial role in early warning and mitigating the impact of severe weather. 
     
     This study introduces a fast, simple, yet effective object based approach using machine learning. 
     Storm objects are identified via a 2D wavelet transform on cloud-top temperature satellite data. 
     
-    Features such as time of observation ($t_0$), latitude, longitude, size, distance, and wavelet power of the nearest storms to 
+    Features such as time of observation ($t_0$), latitude, longitude, size, distance, and wavelet power of nearby storms to 
     Zambia are used to predict storm occurrence 1 hour ahead. 
     """
     st.success(abstract)
@@ -115,7 +115,7 @@ elif page == "Nowcast Portal":
 
         # Compute and display adjusted observation time
         display_datetime = selected_datetime + timedelta(minutes=int(selected_value))
-        st.write(f"Observation displayed: {display_datetime}")
+        # st.write(f"Observation displayed: {display_datetime}")
 
         # Construct file path
         file_observation = f"./public/images/observation/observation-{display_datetime.strftime('%Y-%m-%d-%H-%M')}.png"
