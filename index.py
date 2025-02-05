@@ -132,13 +132,10 @@ elif page == "Nowcast Portal":
 
     with nowcast:
         st.subheader("1 Hour Nowcast")
-
-        #st.write(f"Based on latest observations up to $t_0$: {selected_datetime} UTC")
-
         file_nowcast = f"./public/images/nowcast/nowcast-{selected_datetime.strftime('%Y-%m-%d-%H-%M')}.png"   
         try:
-            #st.write(file_nowcast)
             st.image(file_nowcast)
+            st.write(f"1 pixel is equal to 45 Km")
         except Exception as e:
             st.error(f"Nowcast unavailable since no cores were observed at {selected_datetime} UTC")
     st.empty()  
@@ -146,7 +143,6 @@ elif page == "Nowcast Portal":
 
 elif page == "Contact us":
 
-    # Add a description or introduction
     st.write("Have questions or want to get in touch? Fill out the form below and we’ll get back to you as soon as possible.")
 
     # Create a form for the "Contact Us" page
