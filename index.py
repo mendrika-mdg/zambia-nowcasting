@@ -99,7 +99,7 @@ elif page == "Nowcast Portal":
 
         # Get the current UTC time and round it to the nearest past 15-minute step
         now_utc = datetime.utcnow()
-        rounded_minutes = (now_utc.minute // 15) * 15 - 15  # Round down to nearest 15 minutes
+        rounded_minutes = (now_utc.minute // 15) * 15  # Round down to nearest 15 minutes
         default_time = now_utc.replace(minute=rounded_minutes, second=0, microsecond=0).time()
 
         # User inputs
