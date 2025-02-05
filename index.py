@@ -58,7 +58,7 @@ if page == "Home":
     This study introduces a fast, simple, yet effective object based approach using machine learning. 
     Storm objects are identified via a 2D wavelet transform on cloud-top temperature satellite data. 
     
-    Features such as time of observation ($t_0$), latitude, longitude, size, distance, and wavelet power of nearest storm to 
+    Features such as time of observation ($t_0$), latitude, longitude, size, distance, and wavelet power of the nearest storms to 
     Zambia are used to predict storm occurrence 1 hour ahead. 
     """
     st.success(abstract)
@@ -95,11 +95,11 @@ elif page == "Nowcast Portal":
     with observation:
         st.subheader("Observation")
 
-        st.write("Choose nowcast origin ($t_0$)")
+        st.write("Choose nowcast origin ($t_0$) in UTC")
 
         # Get the current UTC time and round it to the nearest past 15-minute step
         now_utc = datetime.utcnow()
-        rounded_minutes = (now_utc.minute // 15) * 15  # Round down to nearest 15 minutes
+        rounded_minutes = (now_utc.minute // 15) * 15 - 15  # Round down to nearest 15 minutes
         default_time = now_utc.replace(minute=rounded_minutes, second=0, microsecond=0).time()
 
         # User inputs
@@ -131,17 +131,16 @@ elif page == "Nowcast Portal":
         st.write("") 
 
     with nowcast:
-        st.subheader("Nowcast")
+        st.subheader("1 Hour Nowcast")
 
-        st.write(f"Based on latest observation up to {selected_datetime}")
+        #st.write(f"Based on latest observations up to $t_0$: {selected_datetime} UTC")
 
-        new_datetime = selected_datetime + timedelta(hours=1)
-        file_nowcast = f"./public/images/nowcast/nowcast-{new_datetime.strftime('%Y-%m-%d-%H-%M')}.png"   
+        file_nowcast = f"./public/images/nowcast/nowcast-{selected_datetime.strftime('%Y-%m-%d-%H-%M')}.png"   
         try:
             #st.write(file_nowcast)
             st.image(file_nowcast)
         except Exception as e:
-            st.error("Nowcast Unavailable")
+            st.error(f"Nowcast unavailable since no cores were observed at {selected_datetime} UTC")
     st.empty()  
     st.markdown('<div class="footer">&copy; 2025 Mendrika Rakotomanga. All Rights Reserved.</div>', unsafe_allow_html=True)
 
