@@ -126,7 +126,6 @@ elif page == "Nowcast Portal":
         except Exception:
             st.error("No data available")
 
-
     with spacer:
         st.write("") 
 
