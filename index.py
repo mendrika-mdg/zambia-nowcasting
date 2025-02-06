@@ -97,8 +97,8 @@ elif page == "Nowcast Portal":
 
         st.write("Choose nowcast origin ($t_0$) in UTC")
 
-        # Get the current UTC time and round it to the nearest past 15-minute step
-        now_utc = datetime.utcnow()
+        # Get the current UTC time, subtract 30 minutes, and round to the nearest past 15-minute step
+        now_utc = datetime.utcnow() - timedelta(minutes=30)
         rounded_minutes = (now_utc.minute // 15) * 15  # Round down to nearest 15 minutes
         default_time = now_utc.replace(minute=rounded_minutes, second=0, microsecond=0).time()
 
@@ -115,7 +115,6 @@ elif page == "Nowcast Portal":
 
         # Compute and display adjusted observation time
         display_datetime = selected_datetime + timedelta(minutes=int(selected_value))
-        # st.write(f"Observation displayed: {display_datetime}")
 
         # Construct file path
         file_observation = f"./public/images/observation/observation-{display_datetime.strftime('%Y-%m-%d-%H-%M')}.png"
