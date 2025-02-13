@@ -133,7 +133,7 @@ elif page == "Nowcast Portal":
         file_nowcast = f"./public/images/nowcast/nowcast-{selected_datetime.strftime('%Y-%m-%d-%H-%M')}.png"   
         try:
             st.image(file_nowcast)
-            st.write(f"1 pixel is equal to 45 Km")
+            st.write(f"Grid spacing ~ 45 Km")
         except Exception as e:
             st.error(f"Nowcast unavailable since no cores were observed at {selected_datetime} UTC")
     st.empty()  
